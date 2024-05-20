@@ -1,3 +1,5 @@
+import { Model } from 'mongoose';
+
 export interface InventoryT {
   quantity: number;
   inStock: boolean;
@@ -18,7 +20,12 @@ export interface ProductT {
   description: string;
   price: number;
   category: string;
-  tags: 'computer' | 'peripherals' | 'wireless' | 'ergonomic';
+  tags: string[];
   variants: Variants;
   inventory: InventoryT;
+}
+
+// for creating static method.......///
+export interface ProductStaticMethodModel extends Model<ProductT> {
+  isProductExist(id: string): Promise<ProductT | null>;
 }

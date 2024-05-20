@@ -33,15 +33,19 @@ const productSchema = new Schema<ProductT>({
   price: { type: Number, required: true },
   category: { type: String, required: true },
   tags: {
-    type: String,
-    enum: {
-      values: ['computer', 'peripherals', 'wireless', 'ergonomic'],
-      message: `{VALUE} is not valid.`,
-    },
+    type: [String],
+    required: true,
   },
   variants: variantsSchema,
   inventory: inventorySchema,
 });
+
+// creating a custom static method ....
+productSchema.statics.isProductExist = async function (id: string) {
+  const existingProduct = await ProductModel.findOne({ _id: id });
+
+  return existingProduct;
+};
 
 const ProductModel = model<ProductT>('Products', productSchema);
 export default ProductModel;
