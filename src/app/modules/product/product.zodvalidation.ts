@@ -14,7 +14,6 @@ const singleVariantSchema = z.object({
 
 // Zod schema for ProductT
 const productZodSchema = z.object({
-  id: z.string(),
   name: z.string(),
   description: z.string(),
   price: z.number().positive(),

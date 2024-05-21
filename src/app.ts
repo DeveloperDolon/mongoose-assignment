@@ -2,6 +2,7 @@ import { Application, Request, Response } from 'express';
 import express from 'express';
 import cors from 'cors';
 import { ProductRoutes } from './app/modules/product/product.route';
+import { OrderRoutes } from './app/modules/order/order.route';
 
 const app: Application = express();
 
@@ -16,6 +17,10 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Hello World!');
 });
 
+// route for product data management
 app.use('/api/products', ProductRoutes);
+
+// route for order data management
+app.use('/api/orders', OrderRoutes);
 
 export default app;

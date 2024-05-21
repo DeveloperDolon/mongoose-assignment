@@ -20,7 +20,15 @@ export interface ProductT {
   inventory: InventoryT;
 }
 
+export interface QuantityUpdateMassageT {
+  success: boolean;
+  message: string;
+}
+
 // for creating static method.......///
-export interface ProductStaticMethodModel extends Model<ProductT> {
-  isProductExist(id: string): Promise<ProductT | null>;
+export interface ProductQuantityUpdate extends Model<ProductT> {
+  updateProductQuantity(
+    id: string,
+    orderQuantity: number,
+  ): Promise<QuantityUpdateMassageT | null>;
 }

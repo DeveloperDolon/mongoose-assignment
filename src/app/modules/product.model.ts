@@ -1,7 +1,7 @@
 import mongoose, { Schema, model } from 'mongoose';
 import {
   InventoryT,
-  ProductStaticMethodModel,
+  ProductQuantityUpdate,
   ProductT,
   SingleVariantsT,
 } from './product/product.interface';
@@ -35,12 +35,50 @@ const productSchema = new Schema<ProductT>({
   inventory: inventorySchema,
 });
 
-// creating a custom static method ....
-productSchema.statics.isProductExist = async function (id: string) {
-  const existingProduct = await ProductModel.findOne({ _id: id });
+// // creating a custom static method ....
+// productSchema.statics.isProductExist = async function (id: string) {
+//   const existingProduct = await ProductModel.findOne({ _id: id });
 
-  return existingProduct;
+//   return existingProduct;
+// };
+
+// checking product quantity and update
+productSchema.statics.updateProductQuantity = async function (
+  id: string,
+  orderQuantity: number,
+) {
+  const product: unknown = await ProductModel.findOne({ _id: id });
+
+  // checking product quantity with order quantity
+  if (product && product?.inventory?.quantity >= orderQuantity) {
+    const updateQuantityCount = await ProductModel.findByIdAndUpdate(
+      id,
+      {
+        inventory: {
+          quantity: product?.inventory?.quantity - orderQuantity,
+          inStock: product?.inventory?.quantity > 0,
+        },
+      },
+      { new: true },
+    );
+    return { success: true, message: 'Product quantity is updated.' };
+  } else if (!product) {
+    // checking product if not exist
+    return { success: false, message: 'Product product is not found.' };
+  } else if (
+    product?.inventory?.quantity < orderQuantity ||
+    product?.inventory?.quantity === 0
+  ) {
+    // checking product quantity if insufficient
+    return {
+      success: false,
+      message: 'Insufficient quantity available in inventory',
+    };
+  }
 };
 
-const ProductModel = model<ProductT>('Product', productSchema);
+const ProductModel = model<ProductT, ProductQuantityUpdate>(
+  'Product',
+  productSchema,
+);
 export default ProductModel;
