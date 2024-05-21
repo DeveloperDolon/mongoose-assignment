@@ -7,11 +7,26 @@ const createProductIntoDB = async (productData: ProductT) => {
   return result;
 };
 
-// all student get from collection
-const getAllProductsFromDB = async () => {
-  const result = await ProductModel.find();
+// all student get from collection and search product
+const getAllProductsFromDB = async (searchTerm: string | null) => {
+  if (!searchTerm) {
+    const result = await ProductModel.find();
 
-  return result;
+    return result;
+  } else if (searchTerm) {
+    const result = await ProductModel.aggregate([
+      {
+        $match: {
+          name: {
+            $regex: searchTerm,
+            $options: 'i', // 'i' for case-insensitive
+          },
+        },
+      },
+    ]);
+
+    return result;
+  }
 };
 
 // get single product with id from db

@@ -23,15 +23,28 @@ const createProduct = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+// get all product from db or search
 const getAllProduct = async (req: Request, res: Response): Promise<void> => {
   try {
-    const result = await ProductServices.getAllProductsFromDB();
+    const { searchTerm } = req.query;
 
-    res.status(200).json({
-      success: true,
-      message: 'Products fetched successfully!',
-      data: result,
-    });
+    if (!searchTerm) {
+      const result = await ProductServices.getAllProductsFromDB(null);
+
+      res.status(200).json({
+        success: true,
+        message: 'Products fetched successfully!',
+        data: result,
+      });
+    } else if (searchTerm) {
+      const result = await ProductServices.getAllProductsFromDB(searchTerm);
+
+      res.status(200).json({
+        success: true,
+        message: `Products matching search term "${searchTerm}" fetched successfully!`,
+        data: result,
+      });
+    }
   } catch (err: any) {
     res.status(500).json({
       success: false,
