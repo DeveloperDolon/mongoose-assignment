@@ -23,4 +23,12 @@ app.use('/api/products', ProductRoutes);
 // route for order data management
 app.use('/api/orders', OrderRoutes);
 
+app.all('*', (req: Request, res: Response) => {
+  // for all error of server this will be execute
+  res.status(400).json({
+    success: false,
+    message: 'Route not found',
+  });
+});
+
 export default app;
