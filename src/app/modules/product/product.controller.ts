@@ -86,9 +86,33 @@ const updateSingleProduct = async (
   }
 };
 
+// delete single product using id
+const deleteSingleProduct = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    const productId = req.params.id;
+
+    const result = await ProductServices.deleteSingleProductIntoDB(productId);
+
+    res.status(200).json({
+      success: true,
+      message: 'Product deleted successfully!',
+      data: null,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err?.message,
+    });
+  }
+};
+
 export const ProductController = {
   createProduct,
   getAllProduct,
   getSingleProduct,
   updateSingleProduct,
+  deleteSingleProduct,
 };
