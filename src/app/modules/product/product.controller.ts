@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { ProductServices } from './product.service';
 import productZodSchema from './product.zodvalidation';
-import ProductModel from '../product.model';
 
 const createProduct = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -41,7 +40,7 @@ const getAllProduct = async (req: Request, res: Response): Promise<void> => {
 
       res.status(200).json({
         success: true,
-        message: `Products matching search term "${searchTerm}" fetched successfully!`,
+        message: `Products matching search term '${searchTerm}' fetched successfully!`,
         data: result,
       });
     }
