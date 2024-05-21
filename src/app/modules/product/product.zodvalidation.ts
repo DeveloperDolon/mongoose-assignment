@@ -3,7 +3,7 @@ import { z } from 'zod';
 // Zod schema for InventoryT
 const inventorySchema = z.object({
   quantity: z.number().int().positive(),
-  inStock: z.boolean(),
+  inStock: z.boolean().default(true),
 });
 
 // Zod schema for SingleVariantsT
