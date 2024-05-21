@@ -1,9 +1,9 @@
 import mongoose, { Schema, model } from 'mongoose';
 import {
   InventoryT,
+  ProductStaticMethodModel,
   ProductT,
   SingleVariantsT,
-  Variants,
 } from './product/product.interface';
 
 const inventorySchema = new Schema<InventoryT>({
@@ -22,12 +22,7 @@ const singleVariantSchema = new Schema<SingleVariantsT>({
   value: { type: String, required: true },
 });
 
-const variantsSchema = new Schema<Variants>({
-  variants: { type: [singleVariantSchema], required: true },
-});
-
 const productSchema = new Schema<ProductT>({
-  id: { type: String, required: true },
   name: { type: String, required: true },
   description: { type: String, required: true },
   price: { type: Number, required: true },
@@ -36,7 +31,7 @@ const productSchema = new Schema<ProductT>({
     type: [String],
     required: true,
   },
-  variants: variantsSchema,
+  variants: [singleVariantSchema],
   inventory: inventorySchema,
 });
 
@@ -47,5 +42,5 @@ productSchema.statics.isProductExist = async function (id: string) {
   return existingProduct;
 };
 
-const ProductModel = model<ProductT>('Products', productSchema);
+const ProductModel = model<ProductT>('Product', productSchema);
 export default ProductModel;

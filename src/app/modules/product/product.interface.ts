@@ -10,18 +10,13 @@ export interface SingleVariantsT {
   value: string;
 }
 
-export interface Variants {
-  variants: SingleVariantsT[];
-}
-
 export interface ProductT {
-  id: string;
   name: string;
   description: string;
   price: number;
   category: string;
   tags: string[];
-  variants: Variants;
+  variants: SingleVariantsT[];
   inventory: InventoryT;
 }
 
