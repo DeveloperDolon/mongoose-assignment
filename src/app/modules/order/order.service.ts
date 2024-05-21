@@ -8,9 +8,20 @@ const orderCreateIntoDB = async (orderData: OrderT) => {
   return result;
 };
 
-const allOrderGetFromDB = async () => {
-  const result = OrderModel.find();
+const allOrderGetFromDB = async (email: string | null) => {
+  if (email) {
+    const result = await OrderModel.aggregate([
+      {
+        $match: {
+          email: email,
+        },
+      },
+    ]);
 
+    return result;
+  }
+
+  const result = await OrderModel.find();
   return result;
 };
 
