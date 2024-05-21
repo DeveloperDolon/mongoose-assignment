@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { ProductServices } from './product.service';
 import productZodSchema from './product.zodvalidation';
+import ProductModel from '../product.model';
 
 const createProduct = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -58,8 +59,36 @@ const getSingleProduct = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+// update singe product using id
+const updateSingleProduct = async (
+  req: Request,
+  res: Response,
+): Promise<void> => {
+  try {
+    const id = req.params.productId;
+    const updatedData = req.body;
+
+    const result = await ProductServices.updateSingleProductIntoDB(
+      id,
+      updatedData,
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'Product updated successfully!',
+      data: result,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err?.name === 'ZodError' ? err : err?.message,
+    });
+  }
+};
+
 export const ProductController = {
   createProduct,
   getAllProduct,
   getSingleProduct,
+  updateSingleProduct,
 };
