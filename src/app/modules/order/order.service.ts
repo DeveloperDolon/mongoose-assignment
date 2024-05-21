@@ -8,6 +8,13 @@ const orderCreateIntoDB = async (orderData: OrderT) => {
   return result;
 };
 
+const allOrderGetFromDB = async () => {
+  const result = OrderModel.find();
+
+  return result;
+};
+
 export const OrderServices = {
   orderCreateIntoDB,
+  allOrderGetFromDB,
 };
