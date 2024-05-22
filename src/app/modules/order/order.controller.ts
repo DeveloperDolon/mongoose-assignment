@@ -26,6 +26,7 @@ const orderCreate = async (req: Request, res: Response): Promise<void> => {
     } else {
       res.status(500).json(checkingOrUpdateProductQuantity);
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({
       success: false,
@@ -37,9 +38,9 @@ const orderCreate = async (req: Request, res: Response): Promise<void> => {
 // all order getting controller
 const getAllOrder = async (req: Request, res: Response): Promise<void> => {
   try {
-    const email = req.query.email || null;
+    const email = req.query.email;
 
-    const result = await OrderServices.allOrderGetFromDB(email);
+    const result = await OrderServices.allOrderGetFromDB(email as string);
 
     if (email && result?.length === 0) {
       res.status(500).json({
@@ -51,9 +52,10 @@ const getAllOrder = async (req: Request, res: Response): Promise<void> => {
 
     res.status(200).json({
       success: true,
-      message: `Orders fetched successfully${email?.length > 0 ? ' for user email' : ''}!`,
+      message: `Orders fetched successfully${email ? ' for user email' : ''}!`,
       data: result,
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({
       success: false,

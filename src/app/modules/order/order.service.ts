@@ -8,7 +8,7 @@ const orderCreateIntoDB = async (orderData: OrderT) => {
   return result;
 };
 
-const allOrderGetFromDB = async (email: string | null) => {
+const allOrderGetFromDB = async (email: string) => {
   if (email) {
     const result = await OrderModel.aggregate([
       {

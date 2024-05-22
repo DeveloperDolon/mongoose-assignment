@@ -1,16 +1,16 @@
 import { Model } from 'mongoose';
 
-export interface InventoryT {
+export type InventoryT = {
   quantity: number;
   inStock: boolean;
-}
+};
 
-export interface SingleVariantsT {
+export type SingleVariantsT = {
   type: string;
   value: string;
-}
+};
 
-export interface ProductT {
+export type ProductT = {
   name: string;
   description: string;
   price: number;
@@ -18,17 +18,17 @@ export interface ProductT {
   tags: string[];
   variants: SingleVariantsT[];
   inventory: InventoryT;
-}
+};
 
-export interface QuantityUpdateMassageT {
+export type QuantityUpdateMassageT = {
   success: boolean;
   message: string;
-}
+};
 
 // for creating static method.......///
-export interface ProductQuantityUpdate extends Model<ProductT> {
+export type ProductQuantityUpdate = {
   updateProductQuantity(
     id: string,
     orderQuantity: number,
   ): Promise<QuantityUpdateMassageT | null>;
-}
+} & Model<ProductT>;

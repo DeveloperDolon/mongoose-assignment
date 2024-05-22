@@ -14,6 +14,7 @@ const createProduct = async (req: Request, res: Response): Promise<void> => {
       message: 'Product created successfully!',
       data: result,
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({
       success: false,
@@ -28,7 +29,7 @@ const getAllProduct = async (req: Request, res: Response): Promise<void> => {
     const { searchTerm } = req.query;
 
     if (!searchTerm) {
-      const result = await ProductServices.getAllProductsFromDB(null);
+      const result = await ProductServices.getAllProductsFromDB('all');
 
       res.status(200).json({
         success: true,
@@ -36,7 +37,9 @@ const getAllProduct = async (req: Request, res: Response): Promise<void> => {
         data: result,
       });
     } else if (searchTerm) {
-      const result = await ProductServices.getAllProductsFromDB(searchTerm);
+      const result = await ProductServices.getAllProductsFromDB(
+        searchTerm as string,
+      );
 
       res.status(200).json({
         success: true,
@@ -44,6 +47,7 @@ const getAllProduct = async (req: Request, res: Response): Promise<void> => {
         data: result,
       });
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({
       success: false,
@@ -63,6 +67,7 @@ const getSingleProduct = async (req: Request, res: Response): Promise<void> => {
       message: 'Product fetched successfully!',
       data: result,
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({
       success: false,
@@ -90,6 +95,7 @@ const updateSingleProduct = async (
       message: 'Product updated successfully!',
       data: result,
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({
       success: false,
@@ -106,13 +112,14 @@ const deleteSingleProduct = async (
   try {
     const productId = req.params.id;
 
-    const result = await ProductServices.deleteSingleProductIntoDB(productId);
+    await ProductServices.deleteSingleProductIntoDB(productId);
 
     res.status(200).json({
       success: true,
       message: 'Product deleted successfully!',
       data: null,
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     res.status(500).json({
       success: false,

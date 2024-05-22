@@ -8,8 +8,8 @@ const createProductIntoDB = async (productData: ProductT) => {
 };
 
 // all student get from collection and search product
-const getAllProductsFromDB = async (searchTerm: string | null) => {
-  if (!searchTerm) {
+const getAllProductsFromDB = async (searchTerm: string) => {
+  if (searchTerm === 'all') {
     const result = await ProductModel.find();
 
     return result;
@@ -30,7 +30,7 @@ const getAllProductsFromDB = async (searchTerm: string | null) => {
 };
 
 // get single product with id from db
-const getSingleProductFromDB = async (productId: string) => {
+const getSingleProductFromDB = async (productId: string | null) => {
   const result = await ProductModel.findById({ _id: productId });
 
   return result;

@@ -12,25 +12,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const app_1 = __importDefault(require("./app"));
-const mongoose_1 = __importDefault(require("mongoose"));
-const config_1 = __importDefault(require("./app/config"));
-// main().catch(err => console.log(err));
-function main() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            yield mongoose_1.default
-                .connect(config_1.default.database_url)
-                .then(() => console.log('MongoDB connected...'))
-                .catch((err) => console.log(err));
-            // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
-            app_1.default.listen(config_1.default.port, () => {
-                console.log(`Example app listening on port ${config_1.default.port}`);
-            });
-        }
-        catch (err) {
-            console.log(err);
-        }
-    });
-}
-main();
+exports.OrderServices = void 0;
+const order_model_1 = __importDefault(require("./order.model"));
+// order create on database function
+const orderCreateIntoDB = (orderData) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = order_model_1.default.create(orderData);
+    return result;
+});
+const allOrderGetFromDB = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    if (email) {
+        const result = yield order_model_1.default.aggregate([
+            {
+                $match: {
+                    email: email,
+                },
+            },
+        ]);
+        return result;
+    }
+    const result = yield order_model_1.default.find();
+    return result;
+});
+exports.OrderServices = {
+    orderCreateIntoDB,
+    allOrderGetFromDB,
+};

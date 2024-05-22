@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import {
   InventoryT,
   ProductQuantityUpdate,
@@ -47,11 +47,11 @@ productSchema.statics.updateProductQuantity = async function (
   id: string,
   orderQuantity: number,
 ) {
-  const product: unknown = await ProductModel.findOne({ _id: id });
+  const product: ProductT | null = await ProductModel.findOne({ _id: id });
 
   // checking product quantity with order quantity
   if (product && product?.inventory?.quantity >= orderQuantity) {
-    const updateQuantityCount = await ProductModel.findByIdAndUpdate(
+    await ProductModel.findByIdAndUpdate(
       id,
       {
         inventory: {
